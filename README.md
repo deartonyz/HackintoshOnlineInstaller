@@ -2,7 +2,18 @@
 
 ![Hackintosh](AboutThisMac.png)
 
+#### **EFI更新：**
+
+2021-05-12
+
+1、更新 OpenCore 0.6.9 正式版。
+2、例行升级 kext 版本（AppleALC、IntelMausi、Lilu、NVMeFix、RestrictEvents、VirtualSMC、WhateverGreen）。
+3、集成读卡器驱动，默认禁用，自行开启（已硬改的请忽略）；优化缓冲帧补丁。
+
+
+
 ### Supported macOS versions
+
 + macOS Mojave
 + macOS Catalina
 + macOS Big Sur 11.2.1（using now）

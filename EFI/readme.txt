@@ -1,4 +1,4 @@
-- Version：210411
+- Version：210512
 - Maintainer：维奇(weachy)
 - 柔情似水，佳期如梦，忍顾鹊桥归路。
 
@@ -8,9 +8,13 @@ If you want to learn more about hackintosh with Intel NUC 'Bean Canyon'. Please 
 
 * 当前引导支持 Mojave、Catalina、Big Sur（10.14～11.x）
 
+* ⚠️2021年5月：
+部分群友从 3 月份之前的 OC 引导，升级到3月之后的 EFI，出现引导丢失的问题，解决办法如下：
+准备一个 FAT32 格式的 U 盘，将 EFI 拷贝至 U 盘根目录。NUC 开机，连续按 F10 进入启动菜单，选择 U 盘启动并连续按 ESC 出现 OC 菜单，按一次空格键，出现隐藏选项，选择最后一个Reset Nvram，会车执行。拔掉U盘重启。
+
 
 - OpenCore 实现双系统引导的说明：
-1、Windows 建议用 UEFI 模式安装（⚠️无需 Bootcamp 安装，⚠️不支持 MBR 传统引导模式）。
+1、Windows 建议直接用 UEFI 模式安装（⚠️无需 Bootcamp 安装，⚠️不支持 MBR 传统引导模式）。
 2、内置了四套 plist 配置文件，区别如下：
  单系统：
   config.plist：默认配置文件，适配 4k 分辨率的显示器
@@ -56,17 +60,32 @@ If you want to learn more about hackintosh with Intel NUC 'Bean Canyon'. Please 
 我整理了豆子峡谷专用的 intel 板载蓝牙驱动（兼容 10.13 以上系统），可同时兼容 OpenCore 与 Clover，请到群共享中获取“intel板载蓝牙驱动_for_OC&Clover”。
 ⚠️ 由于 OpenCore 的变化，板载驱动默认为禁用状态，请参考下面“更新日志”部分 2020-10-16 的更新内容修改为启用。
 
+
 - Intel 板载 Intel Wi-Fi 驱动
-⚠️ 有很多人不断在问驱动是否完美的问题。要回答这个问题首先需要定义什么是“完美”，如果将白果卡的体验定为完美，那板载网卡几乎不可能完美，如果只是满足基础上网需求，倒是算可用，因为现阶段驱动速率很低、网速上不去。当前驱动是从 OpenBSD 平台的 Intel 驱动移植，尽力在做适配和兼容，适合要求不高的用户。最优方案仍然是白果卡。
-考虑到板载 Wifi 驱动大佬 @zxystd 发布了正式版，我就做了这段集成操作说明，自行按如下方法操作：
-1、下载 itlwm 驱动，地址：https://github.com/OpenIntelWireless/itlwm/releases
+⚠️ 有很多人不断在问驱动是否完美的问题。要回答这个问题首先要定义什么是“完美”，如果将白果卡的体验定为完美，那板载网卡几乎不可能完美，如果只是满足基础上网需求，倒是算可用，因为现阶段驱动速率低、偶尔有掉驱动的问题。当前驱动是从 OpenBSD 平台的 Intel 驱动移植，只能说尽力在做适配和兼容，适合要求不高的用户。最优方案仍然是白果卡。
+考虑到板载 Wifi 驱动大佬 @zxystd 发布了 Intel Wi-Fi 驱动的正式版，简单做了集成工作，但是默认为关闭状态，自行按如下方法开启：
+
+* itlwm 版驱动（需配合 HeliPort 客户端使用）
+1、下载 itlwm 驱动（名称格式为 itlwm_驱动版本号_stable.kext.zip），地址：https://github.com/OpenIntelWireless/itlwm/releases
 2、将解压出的 itlwm.kext 放入 /EFI/OC/Kexts/ 文件夹。
-3、修改 config.plist，启用注册 itlwm.kext 的代码（<key>Enabled</key> 下一行的值改为 <true/>）。
+3、修改 config.plist，启用注册 itlwm.kext 的代码（搜索“itlwm.kext”，下面几行找到 <key>Enabled</key> 下一行的值 <false/> 改为 <true/>）。
 4、安装板载 Intel Wi-Fi 客户端程序 HeliPort，地址：https://github.com/OpenIntelWireless/HeliPort/releases
 5、重启电脑，运行 HeliPort 程序连接到 Wifi。按下 Option 点击菜单栏的 HeliPort，可将其设置为开机自启。
 
+* AirportItlwm 版驱动（无需配合 HeliPort 客户端使用）
+1、根据自己当前的 macOS 版本下载 AirportItlwm 驱动（名称格式为 AirportItlwm_驱动版本号_stable_macOS系统代号.kext.zip），地址：https://github.com/OpenIntelWireless/itlwm/releases
+2、将解压出的 AirportItlwm.kext 放入 /EFI/OC/Kexts/ 文件夹。
+3、修改 config.plist，启用注册 AirportItlwm.kext 的代码（搜索“AirportItlwm.kext”，下面几行找到 <key>Enabled</key> 下一行的值 <false/> 改为 <true/>）。
+4、修改 config.plist，搜索“IO80211Family.kext”，下面几行找到 <key>Enabled</key> 下一行的值 <false/> 改为 <true/>
+5、重启电脑。
+
 
 - 更新日志（Changelog）：
+
+2021-05-12
+1、更新 OpenCore 0.6.9 正式版。
+2、例行升级 kext 版本（AppleALC、IntelMausi、Lilu、NVMeFix、RestrictEvents、VirtualSMC、WhateverGreen）。
+3、集成读卡器驱动，默认禁用，自行开启（已硬改的请忽略）；优化缓冲帧补丁。
 
 2021-04-11
 1、驱动风扇转速传感器驱动（iStat Menus、腾讯柠檬、Sensi等软件可正常识别风扇转速）。
@@ -114,7 +133,7 @@ If you want to learn more about hackintosh with Intel NUC 'Bean Canyon'. Please 
 2020-08-20
 1、此次版本为优化版。升级此版本建议清空nvram（使用 Hackintool 或进入 OC 启动菜单执行 Reset Nvram）
 （1）解决了部分群友反馈的睡眠唤醒会引发重启的问题。
-（2）解锁全频段，解决群友反馈休眠唤醒后网速降低的问题。
+（2）解锁Wifi全频段，解决部分群友反馈休眠唤醒后网速降低的问题。
 
 2020-08-05
 1、别来无恙。由于适配 macOS Big Sur（11.16或11.0），OpenCore 停更了一个月，终于迎来 0.6.0 正式版。
@@ -124,9 +143,6 @@ If you want to learn more about hackintosh with Intel NUC 'Bean Canyon'. Please 
 2、例行升级 kext 版本（Lilu、AppleALC、CPUFriend、NVMeFix、VirtualSMC、WhateverGreen）
 3、此版本重新梳理了配置文件，增加了板载 Intel Wi-Fi 的相关内容，10.15 接近尾声，辞旧迎新。
 再强调一下，关于双系统的逻辑，仍采用类似 Clover 的方式：单系统默认直接进系统，需通过 ESC/Option 键手动进入 OC 引导界面；双系统默认显示 OC 引导界面以便系统选择，并有倒计时，按任意按键打断倒计时，无操作则进入默认系统（回车键进入系统，Ctrl+回车设置为默认系统）。
-
-2020-08-20
-1、此版本纯粹是优化版，修正了某些情况下睡眠唤醒会重启的问题。如果你仍碰到此类问题，建议禁用睡眠。
 
 2020-06-08
 1、NDK OpenCore 停更，因此恢复到官方版分支，本次更新到 OpenCore 0.5.9 正式版
