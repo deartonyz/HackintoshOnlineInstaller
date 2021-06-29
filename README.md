@@ -4,7 +4,7 @@
 
 #### **EFI更新：**
 
-2021-06-18
+2021-06-29
 
 * 更新 OpenCore 0.7.0 正式版。
 * 例行升级 kext 版本（AppleALC、NVMeFix、RestrictEvents、VirtualSMC、WhateverGreen）
