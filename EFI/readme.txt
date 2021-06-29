@@ -1,16 +1,12 @@
-- Version：210512
+- Version：210618
 - Maintainer：维奇(weachy)
 - 柔情似水，佳期如梦，忍顾鹊桥归路。
 
-如果你想了解更多关于 NUC8ixBE 豆子峡谷黑苹果相关知识，请查阅我的文章 http://u.nu/bean
+如果你想了解更多关于 NUC8ixBE 豆子峡谷黑苹果相关知识，请查阅我的文章 https://u.nu/bean
 If you want to learn more about hackintosh with Intel NUC 'Bean Canyon'. Please visit: https://u.nu/bean
 
 
-* 当前引导支持 Mojave、Catalina、Big Sur（10.14～11.x）
-
-* ⚠️2021年5月：
-部分群友从 3 月份之前的 OC 引导，升级到3月之后的 EFI，出现引导丢失的问题，解决办法如下：
-准备一个 FAT32 格式的 U 盘，将 EFI 拷贝至 U 盘根目录。NUC 开机，连续按 F10 进入启动菜单，选择 U 盘启动并连续按 ESC 出现 OC 菜单，按一次空格键，出现隐藏选项，选择最后一个Reset Nvram，会车执行。拔掉U盘重启。
+* 当前引导支持 Mojave、Catalina、Big Sur（10.14～11.x）。暂不考虑适配 macOS Monterey（12）开发者预览版（Beta 版），等待秋季发布正式版。有群友已尝试升级 macOS 12 Beta 版，除系统本身的 BUG 外，因 Kext 尚未适配新系统，存在部分硬件无法驱动的问题，风险自担。
 
 
 - OpenCore 实现双系统引导的说明：
@@ -80,7 +76,20 @@ If you want to learn more about hackintosh with Intel NUC 'Bean Canyon'. Please 
 5、重启电脑。
 
 
+- 开启读卡器驱动（仅适用于未硬改用户）
+1、修改 config.plist，搜索“Sdcard”，下方找到 <key>Enabled</key> 下一行的值 <false/> 改为 <true/>，即表示启用
+2、重启电脑。
+
+
 - 更新日志（Changelog）：
+
+2021-06-18
+1、更新 OpenCore 0.7.0 正式版。
+2、例行升级 kext 版本（AppleALC、NVMeFix、RestrictEvents、VirtualSMC、WhateverGreen）。
+3、优化 OpenCore UI；解决部分显示器休眠后无法点亮屏幕的问题。
+
+2021-05-15
+1、修复上一版引导在休眠唤醒后，部分应用假死、无法播放在线视频的问题。
 
 2021-05-12
 1、更新 OpenCore 0.6.9 正式版。
