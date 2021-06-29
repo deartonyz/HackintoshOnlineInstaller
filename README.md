@@ -4,6 +4,11 @@
 
 #### **EFI更新：**
 
+2021-06-29
+1、更新 OpenCore 0.7.0 正式版。
+2、例行升级 kext 版本（AppleALC、NVMeFix、RestrictEvents、VirtualSMC、WhateverGreen）。
+3、优化 OpenCore UI；解决部分显示器休眠后无法点亮屏幕的问题。
+
 2021-05-12
 
 * 更新 OpenCore 0.6.9 正式版。
